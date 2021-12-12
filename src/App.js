@@ -1,24 +1,25 @@
-import logo from './logo.svg';
+//import 'firebase/firestore';
+//import 'firebase/auth';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
 import './App.css';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import City from './Collections/City/City';
+import CityUpdate from './Collections/City/CityUpdate';
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <Router>
+      <Switch>
+        <Route path={"/"} exact component={City}></Route>
+        <Route path={"/addCity"} exact component={CityUpdate}></Route>
+        <Route path={"/updateCity/:id"} exact component={CityUpdate}></Route>
+      </Switch>
+     </Router>
+    </>
   );
 }
 
