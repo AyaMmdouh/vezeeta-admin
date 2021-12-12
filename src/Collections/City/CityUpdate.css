@@ -1,0 +1,63 @@
+.tags {
+    line-height: 2.6rem; }
+  
+  .tag {
+    background-color: #212529;
+    border-radius: 5rem;
+    color: white;
+    padding: .2rem .8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 1.05rem; }
+    .tag:not(:last-of-type) {
+      margin-right: .4rem; }
+  
+  .taged-textbox {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(0, 0, 0, 0.198);
+    border-radius: 4px;
+    padding: 1.2rem; }
+    .taged-textbox__data {
+      display: flex;
+      align-items: flex-start; }
+    .taged-textbox__tags {
+      display: flex;
+      flex-wrap: wrap; }
+    .taged-textbox__tag {
+      background-color: #e4e3e3;
+      padding: .5rem;
+      border-radius: 10rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between; }
+      .taged-textbox__tag:not(:last-of-type) {
+        margin-right: 1rem; }
+      .taged-textbox__tag span {
+        padding: 0 .7rem; }
+    .taged-textbox__remove {
+      width: 1.5rem;
+      height: 1.5rem;
+      font-size: 1rem;
+      border-radius: 50%;
+      background-color: #444;
+      color: #e4e3e3;
+      display: flex;
+      justify-content: center;
+      align-items: center; }
+    .taged-textbox__clear {
+      font-size: 2rem; }
+    .taged-textbox__textbox {
+      border-width: 0;
+      width: 100%;
+      padding: 0;
+      line-height: 1.85;
+      font-size: 1.4rem; }
+      .taged-textbox__textbox:focus, .taged-textbox__textbox:active {
+        border-width: 0; }
+        .add-product__actions {
+            display: flex;
+            justify-content: flex-end; }
+            .add-product__actions .btn:first-of-type {
+              margin-right: 1rem; }
