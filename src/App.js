@@ -1,24 +1,23 @@
 //import 'firebase/firestore';
 //import 'firebase/auth';
+import { Provider } from "react-redux";
+import store from './store/store'
 import {
   BrowserRouter as Router,
   Switch,
   Route,
 } from "react-router-dom";
-import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import City from './Collections/City/City';
-import CityUpdate from './Collections/City/CityUpdate';
+import './App.css';
+import Routes from "./Routes/routes";
 function App() {
   return (
     <>
-    <Router>
-      <Switch>
-        <Route path={"/"} exact component={City}></Route>
-        <Route path={"/addCity"} exact component={CityUpdate}></Route>
-        <Route path={"/updateCity/:id"} exact component={CityUpdate}></Route>
-      </Switch>
-     </Router>
+      <Router>
+        <Provider store={store}>
+          <Routes/>
+        </Provider>
+      </Router>
     </>
   );
 }
