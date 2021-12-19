@@ -1,5 +1,5 @@
 import { useParams,useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 import { fs } from '../../FirebaseConfig';
 import { doc, getDoc, updateDoc, collection, addDoc } from 'firebase/firestore'
 import Form from 'react-bootstrap/Form'

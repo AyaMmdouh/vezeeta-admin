@@ -1,7 +1,7 @@
 const isAuth = (data) => {
-     return ({
-         type: "IS_AUTH",
-         payload: data,
-     })
- }
- export default isAuth;
+    return ({
+        type: "IS_AUTH",
+        payload: data,
+    })
+}
+export default isAuth;
