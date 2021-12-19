@@ -1,5 +1,5 @@
 const INITIAL_VALUE = {
-    isAuth:false
+    isAuth: false
 }
 export default function authReducer(state = INITIAL_VALUE, action) {
     switch (action.type) {

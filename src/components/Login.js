@@ -1,9 +1,10 @@
 import { useState } from "react";
 import {
+    createUserWithEmailAndPassword,
     onAuthStateChanged,
     signOut
 } from "firebase/auth";
-import { getDocs, collection, query, where } from 'firebase/firestore'
+import { getDocs, collection, query, where } from 'firebase/firestore';
 import { Button, Container } from "react-bootstrap";
 import Form from 'react-bootstrap/Form'
 import { auth, fs } from "../FirebaseConfig";
@@ -17,9 +18,16 @@ export default function Login() {
     const history = useHistory();
     const dispatch = useDispatch();
     const loged = useSelector(state => state.login.login);
-    console.log(loged)
+    // console.log(loged)
     onAuthStateChanged(auth, (currentUser) => {
-        console.log(currentUser)
+        console.log(currentUser);
+        if (currentUser) {
+            dispatch(isAuth(true));
+            console.log(currentUser)
+        } else {
+            dispatch(isAuth(false));
+        }
+
     });
     const login = async () => {
         var q = query(collection(fs, 'users'),
@@ -27,17 +35,19 @@ export default function Login() {
             where('email', '==', email));
         var snapshot = await getDocs(q)
         snapshot.forEach((doc) => {
-            console.log(doc.data());
+            //  console.log(doc.data());
             dispatch(logedUser(email, password));
             if (loged) {
-                dispatch(isAuth(true));
-                history.push(`/city`);
+                 localStorage.setItem("isAuth",true)
+                history.push(`/doctors`);
+               
             }
-
         })
-
-
     }
+
+    // const register=()=>{
+    //     createUserWithEmailAndPassword(auth,email,password);
+    // }
     const logout = async () => {
         await signOut(auth);
         dispatch(isAuth(false));

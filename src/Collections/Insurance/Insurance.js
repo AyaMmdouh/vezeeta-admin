@@ -15,10 +15,8 @@ export default function Insurance() {
             const data = await getDocs(insuranceCollectionRef);
             setInsurances(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
         };
-
         getInsuranc();
     }, []);
-
 
     const updateInsurance = (id) => {
         history.push(`/updateInsurance/${id}`)
@@ -27,7 +25,6 @@ export default function Insurance() {
         const insurancDoc = doc(fs, "Insurance", id);
         await deleteDoc(insurancDoc);
         alert('Doc Deleted Successfully ');
-
     }
     const addNewDoc = () => {
         history.push("/addInsurance");
@@ -44,9 +41,7 @@ export default function Insurance() {
                                 <FontAwesomeIcon icon={faEdit} style={{ margin: 3 }} className="icon" onClick={() => { updateInsurance(insurance.id) }}></FontAwesomeIcon>
                                 <FontAwesomeIcon icon={faTrash} style={{ margin: 3 }} className="icon" onClick={() => { deleteInsurance(insurance.id) }}></FontAwesomeIcon>
                             </div>
-
                         </Card>
-
                     )
                 })}
             </Container>
