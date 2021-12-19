@@ -8,10 +8,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 function App() {
   const isAuth = useSelector(state=>state.isAuth.isAuth);
+  const isLoged= localStorage.getItem("isAuth")
   return (
     <>
       <Router>
-        {isAuth && <NavbarComponent />}
+        {isLoged && <NavbarComponent />}
         <Routes />
       </Router>
     </>
