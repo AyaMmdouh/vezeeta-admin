@@ -44,6 +44,7 @@ export default function Login() {
   }
   const logout =async () => {
     await signOut(auth);
+    localStorage.setItem("isAuth",false);
     dispatch(isAuth(false));
   };
 

@@ -9,8 +9,8 @@ import Insurance from "../Collections/Insurance/Insurance";
 import InsuranceUpdate from "../Collections/Insurance/InsuranceUpdate";
 import User from "../Collections/Users/users";
 import Reservation from "../Collections/Reservation/reservation";
-import Doctor from "../Collections/Doctors/doctor";
-import DoctorUpdate from "../Collections/Doctors/doctorsUpdate";
+import Doctor from "../Collections/Doctor/doctor";
+import DoctorUpdate from "../Collections/Doctor/doctorsUpdate";
 import Login from "../components/Login/login";
 export default function Routes() {
     return (
