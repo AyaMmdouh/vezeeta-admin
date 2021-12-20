@@ -14,8 +14,9 @@ export default function NavbarComponent() {
     const user = useSelector(state => state.login.login);
     const history = useHistory();
     const dispatch = useDispatch();
-    const logout = () => {
-        signOut(auth);
+    const logout =async () => {
+        await signOut(auth);
+        localStorage.setItem("isAuth",false);
         dispatch(isAuth(false));
         history.push(`/login`);
     };
