@@ -1,0 +1,168 @@
+
+
+// import { useState , useEffect} from 'react';
+
+
+// import { fs } from '../../FirebaseConfig';
+// import {collection, doc, getDocs,addDoc, updateDoc,deleteDoc} from 'firebase/firestore';
+// import { Button,ListGroup ,Card,Container, Carousel} from 'react-bootstrap';
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+// import { useHistory } from "react-router-dom";
+
+
+// function Doctor() {
+//   const [newName, setNewName] = useState("")
+ 
+  
+//   const [Doctors,setDoctors] = useState([])
+  
+//   const history = useHistory();
+//   const doctorsCollectionRef = collection(fs, "Doctors")
+//    const createDoctor =async () =>{
+//      await addDoc(doctorsCollectionRef,{ name : newName})
+
+//    };
+//    const updateDoctor = async (id) => {
+//      const doctorDoc = doc(fs,"Doctors",id)
+//      const newFields = {}
+//      await updateDoc(doctorDoc,newFields)
+
+
+//    };
+
+//    const deleteDoctor = async (id) =>{
+//     const doctorDoc = doc(fs,"Doctors",id)
+//     await deleteDoc(doctorDoc)
+
+//    };
+//   useEffect(()=>{
+
+//     const getDoctors = async () =>{
+//       const dataDocs = await getDocs(doctorsCollectionRef );
+//       setDoctors(dataDocs.docs.map((doc)=>({...doc.data(), id: doc.id})))
+      
+
+//     };
+//     getDoctors();
+
+//   }, [] )
+//   // console.log(Doctors);
+//   const updateDoc = (id) => {
+//     history.push(`/updateDoctors/${id}`)
+// }
+// const deleteDoc = (id) => {
+//     console.log(id);
+// }
+// const addNewDoc = () => {
+//     history.push("/addDoctor");
+// }
+//   return (
+//     <div className="App">
+//        <Button className="btn btn-brimary m-5 p-2 col-2" onClick={addNewDoc}>Add new Doc ?</Button>
+//       {/* <input placeholder='name..' onChange={(event)=>{setNewName(event.target.value);}}></input>
+//       <Button className="btn btn-brimary m-5 p-2 col-2" onClick={createDoctor}>Add new Doc ?</Button> */}
+//       {/* <Button onClick={createDoctor}>create doctor</Button> */}
+//       <Container className="container row d-flex justify-content-center" dir="rtl">
+//       {Doctors.map((doctor)=>{return(
+//          <Card className="bg-light col-3" style={{ backgroundColor: "lightgray", width:'18rem'}}>
+//          <div>
+//           {" "}
+         
+//           <Card.Title className="fs-4"> <h4>دكتور: {doctor.name}</h4></Card.Title>
+//           <Card.Img variant="top" src= {doctor.imgDoctor} />
+//           <Card.Text>
+//           <ListGroup>
+
+//           <ListGroup.Item className="text-start  bg-light text-dark"style={{ backgroundColor: "lightgray", height:'3rem' }} ><p>id:{doctor.id}</p></ListGroup.Item>
+//           <ListGroup.Item className="text-start  bg-light text-dark"style={{ backgroundColor: "lightgray", height:'3rem' }} ><p>تليفون:{doctor.mobile}</p></ListGroup.Item>
+//           <ListGroup.Item className="text-start  bg-light text-dark" style={{ backgroundColor: "lightgray", height:'3rem' }}><p>الدرجة العلمية: {doctor.degree}</p></ListGroup.Item>
+//           <ListGroup.Item className="text-start  bg-light text-dark"style={{ backgroundColor: "lightgray", height:'4rem' }}><p> الفئة: {doctor.category.name}</p></ListGroup.Item>
+//           {/* <ListGroup.Item className="text-start  bg-light text-dark"style={{ backgroundColor: "lightgray", height:'4rem' }}><p>subCategory: {doctor.category.subCategory}</p></ListGroup.Item> */}
+//           <ListGroup.Item className="text-start  bg-light text-dark"style={{ backgroundColor: "lightgray", height:'3rem' }}><p>يبدا وقت العيادة في: {doctor.clinicTime.start}</p></ListGroup.Item>
+//           <ListGroup.Item className="text-start  bg-light text-dark"style={{ backgroundColor: "lightgray", height:'3rem' }}><p>ينتهي وقت العيادة في: {doctor.clinicTime.end}</p></ListGroup.Item>
+//           <ListGroup.Item className="text-start  bg-light text-dark"style={{ backgroundColor: "lightgray", height:'3rem' }}><p>المدينة: {doctor.location.city}</p></ListGroup.Item>
+//           <ListGroup.Item className="text-start  bg-light text-dark"style={{ backgroundColor: "lightgray", height:'4rem' }}><p>الاقليم: {doctor.location.region}</p></ListGroup.Item>
+//              {/* <ListGroup.Item className="text-center fs-5 bg-dark text-light"><h4>- {doctor.information}</h4></ListGroup.Item> */}
+//              {/* <Card.Img variant="top" src= {doctor.imgsClinic} /> */}
+
+//           </ListGroup>
+//          <p>معلومات الدكتور- {doctor.information}</p>
+//          {/* ////////// */}
+//          <Carousel>
+//   <Carousel.Item>
+//     <img
+//       className="d-block w-100"
+//       src={doctor.imgsClinic[0]}
+//       alt="First slide"
+//     />
+    
+//   </Carousel.Item>
+//   <Carousel.Item>
+//     <img
+//       className="d-block w-100"
+//       src={doctor.imgsClinic[1]}
+//       alt="Second slide"
+//     />
+
+   
+//   </Carousel.Item>
+//   <Carousel.Item>
+//     <img
+//       className="d-block w-100"
+//       src={doctor.imgsClinic[2]}
+//       alt="Third slide"
+//     />
+
+    
+//   </Carousel.Item>
+//   <Carousel.Item>
+//     <img
+//       className="d-block w-100"
+//       src={doctor.imgsClinic[3]}
+//       alt="Third slide"
+//     />
+
+    
+//   </Carousel.Item>
+// </Carousel>
+// {/* ///////////////// */}
+
+//                                     </Card.Text>
+//                                     <div className="d-flex flex-row">
+//                                 <FontAwesomeIcon icon={faEdit} style={{ margin: 3 }} className="icon" onClick={() => { updateDoc(Doctors.id) }}></FontAwesomeIcon>
+//                                 <FontAwesomeIcon icon={faTrash} style={{ margin: 3 }} className="icon" onClick={() => { deleteDoc(Doctors.id) }}></FontAwesomeIcon>
+//                             </div>
+
+                        
+         
+//           {/* <ListGroup.Item variant="primary"><Button onClick={()=>{deleteDoctor(doctor.id);}}>Delete Doctor</Button></ListGroup.Item> */}
+         
+          
+//       </div>
+//       </Card>
+      
+     
+      
+//       );
+      
+      
+//     })}
+//     </Container>
+    
+     
+     
+//         <>
+            
+                   
+                           
+//         </>
+    
+      
+
+//     </div>
+//   );
+// }
+
+// export default Doctor;
+// padding: 20, margin: 10, borderRadius: 10,
