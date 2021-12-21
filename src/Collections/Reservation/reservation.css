@@ -1,0 +1,21 @@
+.container{
+    background-color: rgb(250, 246, 246);
+    padding: 20;
+}
+.add{
+    font-size: 20;
+    font-weight: bold;
+    text-decoration: none;
+}
+.add:hover{
+    color: red;
+    text-decoration: underline;
+}
+.city{
+    font-size: 20px;
+    color:red;
+}
+.icon:hover{
+color: red;
+cursor: pointer;
+}

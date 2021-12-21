@@ -9,11 +9,10 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import City from './Collections/City/City';
 import CityUpdate from './Collections/City/CityUpdate';
-import Doctors from './Collections/Doctors/doctor';
-import DoctorsUpdate from './Collections/Doctors/doctorsUpdate';
+import DoctorsUpdate from './Collections/Doctor/doctorsUpdate';
 import Users from "./Collections/Users/users";
 import Reservation from './Collections/Reservation/reservation';
-import Doctor from './Collections/Doctors/doctor';
+import Doctor from './Collections/Doctor/doctor';
 // import Navbar from "./Navbar/navbar";
 
 function App() {

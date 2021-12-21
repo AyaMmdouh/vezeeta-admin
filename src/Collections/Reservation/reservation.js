@@ -1,115 +1,91 @@
-import { useState , useEffect} from 'react';
-
-
+import { useState, useEffect } from 'react';
+import { collection, doc, getDocs, updateDoc, deleteDoc, query, where, getDoc, onSnapshot } from 'firebase/firestore';
 import { fs } from '../../FirebaseConfig';
-import {collection, doc, getDocs,addDoc, updateDoc,deleteDoc} from 'firebase/firestore';
-import { ListGroup ,Card,Container, } from 'react-bootstrap';
+import {  Container,Table,td,th } from 'react-bootstrap';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
-
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 function Reservation() {
-
-  
-  const [Reservation,setReservation] = useState([])
- 
-  const reservationCollectionRef = collection(fs, "Reservation")
-//    const createReservation =async () =>{
-//      await addDoc(reservationCollectionRef,{ name : newName})
-
-//    };
-   const updateReservation = async (id) => {
-     const reservationDoc = doc(fs,"Reservation",id)
-     const newFields = {}
-     await updateDoc(reservationDoc,newFields)
-
-
-   };
-
-   const deleteReservation = async (id) =>{
-    const reservationDoc = doc(fs,"Reservation",id)
-    await deleteDoc(reservationDoc)
-
-   };
-  useEffect(()=>{
-
-    const getReservation = async () =>{
-      const dataDocs = await getDocs(reservationCollectionRef );
-      setReservation(dataDocs.docs.map((doc)=>({...doc.data(), id: doc.id})))
-      
-
-    };
+  const [Reservation, setReservation] = useState([])
+  const [reserveItem, setReserveItem] = useState({});
+  const[refresh,setRefresh]=useState(false);
+  const reservetionList = [];
+  useEffect(() => {
     getReservation();
+  }, [])
+  const getReservation = async () => {
+    let q = query(collection(fs, "Reservation"),
+      where('isCancelled', '==', false));
+    let snapshot = await getDocs(q)
+    snapshot.forEach((doc) => {
+      reservetionList.push({ ...doc.data(), id: doc.id });
+    });
+    setReservation(reservetionList);
+    console.log(reservetionList.length)
+  }
 
-  }, [] )
- 
+  const deleteReservation = async (id) => {
+    const reserDoc = await getDoc(doc(fs, "Reservation", id));
+    setReserveItem(reserDoc.data());
+    const deletedDoc = { ...reserveItem, isCancelled: true };
+    const reserve = doc(fs, "Reservation", id);
+    updateDoc(reserve, deletedDoc).then(res=>{
+      setRefresh(!refresh)
+    })
+    console.log(deletedDoc)
+  };
   return (
     <div className="App">
-     
-      <Container className="container row d-flex justify-content-center" dir="rtl">
-      {Reservation.map((reservation)=>{return(
-         <Card className="bg-light col-3" style={{ backgroundColor: "lightgray", width:'18rem' }}>
-         <div>
-          {" "}
-         
-          {/* <Card.Title className="fs-4"> <h4>bookDate: {reservation.bookDate}</h4></Card.Title> */}
-          
-          <Card.Text>
-          <ListGroup>
-
-          <ListGroup.Item className="text-start  bg-success text-light"style={{ backgroundColor: "lightgray", height:'3rem' }} ><p>bookDate:{reservation.bookDate}</p></ListGroup.Item>
-          <ListGroup.Item className="text-start  bg-primary text-light"style={{ backgroundColor: "lightgray", height:'3rem' }} ><p>bookhour:{reservation.bookhour}</p></ListGroup.Item>
-          <ListGroup.Item className="text-start  bg-primary text-light"style={{ backgroundColor: "lightgray", height:'4rem' }}><p> {reservation.doctorName}:DoctorName</p></ListGroup.Item>
-          <ListGroup.Item className="text-start  bg-primary text-light"style={{ backgroundColor: "lightgray", height:'3rem' }}><p>Doctorphone: {reservation.doctorPhone}</p></ListGroup.Item>
-          <ListGroup.Item className="text-start  bg-primary text-light"style={{ backgroundColor: "lightgray", height:'3rem' }}><p>:?isCancelled {reservation.isCancelled}</p></ListGroup.Item>
-          <ListGroup.Item className="text-start  bg-primary text-light"style={{ backgroundColor: "lightgray", height:'3rem' }}><p>Price: {reservation.price}</p></ListGroup.Item>
-          <ListGroup.Item className="text-start  bg-primary text-light"style={{ backgroundColor: "lightgray", height:'3rem' }}><p>userEmail: {reservation.userEmail}</p></ListGroup.Item>
-          <ListGroup.Item className="text-start  bg-primary text-light"style={{ backgroundColor: "lightgray", height:'3rem' }}><p>userName: {reservation.userName}</p></ListGroup.Item>
-          <ListGroup.Item className="text-start  bg-primary text-light"style={{ backgroundColor: "lightgray", height:'3rem' }}><p>userPhone: {reservation.userPhone}</p></ListGroup.Item>
-          <ListGroup.Item className="text-start  bg-primary text-light"style={{ backgroundColor: "lightgray", height:'3rem' }}><p>loctionCity: {reservation.doctorLocation.city}</p></ListGroup.Item>
-          <ListGroup.Item className="text-start  bg-primary text-light"style={{ backgroundColor: "lightgray", height:'4rem' }}><p>LocationRegion: {reservation.doctorLocation.region}</p></ListGroup.Item>
-           
-          
-
-          </ListGroup>
-        
-       
-  
-
-                                    </Card.Text>
-                                    <div className="d-flex flex-row">
-                                <FontAwesomeIcon icon={faEdit} style={{ margin: 3 }} className="icon" onClick={() => { updateReservation(reservation.id) }}></FontAwesomeIcon>
-                                <FontAwesomeIcon icon={faTrash} style={{ margin: 3 }} className="icon" onClick={() => { deleteReservation(reservation.id) }}></FontAwesomeIcon>
-                            </div>
-
-                        
-         
-         
-         
-          
-      </div>
-      </Card>
-      
-     
-      
-      );
-      
-      
-    })}
-    </Container>
-    
-     
-     
-        <>
-            
-                   
-                           
-        </>
-    
-      
-
-    </div>
+      <Container className="container row d-flex justify-content-center mx-auto my-auto" dir="ltr">
+        <Table striped bordered hover variant="dark">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>bookDate</th>
+              <th>bookhour</th>
+              <th>doctorName</th>
+              <th>doctorPhone</th>
+              <th>doctorPhone</th>
+              <th>price</th>
+              <th>userEmail</th>
+              <th>userName</th>
+              <th>userPhone</th>
+              <th>city</th>
+              <th>region</th>
+              <th>role</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {Reservation?.map((reservation, index) => {
+              return (
+                <tr>
+                  <td>{index + 1}</td>
+                  <td>{reservation.bookDate}</td>
+                  <td>{reservation.bookhour}</td>
+                  <td>{reservation.doctorName}</td>
+                  <td>{reservation.doctorPhone}</td>
+                  <td>{reservation.price}</td>
+                  <td>{reservation.userEmail}</td>
+                  <td>{reservation.userName}</td>
+                  <td>{reservation.userPhone}</td>
+                  <td>{reservation.doctorLocation.city}</td>
+                  <td>{reservation.doctorLocation.region}</td>
+                  {reservation.isCancelled && <td>Cancelled</td>}
+                  
+                  <td>
+                    <FontAwesomeIcon icon={faTrash} className='icon' onClick={() => { deleteReservation(reservation.id) }}></FontAwesomeIcon>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
+      </Container>
+    </div >
   );
+  ////////////////////////////////////////////////////////
+  
 }
 
 export default Reservation;
