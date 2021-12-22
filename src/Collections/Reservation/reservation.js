@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
-import { collection, doc, getDocs, updateDoc, deleteDoc, query, where, getDoc, onSnapshot } from 'firebase/firestore';
+import { collection, doc, getDocs, updateDoc, query, where, getDoc } from 'firebase/firestore';
 import { fs } from '../../FirebaseConfig';
-import { ListGroup, Card, Container, } from 'react-bootstrap';
+import { Container, Table, td, th } from 'react-bootstrap';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 function Reservation() {
   const [Reservation, setReservation] = useState([])
   const [reserveItem, setReserveItem] = useState({});
-  const[refresh,setRefresh]=useState(false);
   const reservetionList = [];
   useEffect(() => {
     getReservation();
@@ -20,7 +19,10 @@ function Reservation() {
       reservetionList.push({ ...doc.data(), id: doc.id });
     });
     setReservation(reservetionList);
-    console.log(reservetionList.length)
+    // console.log(reservetionList.length)
+  }
+  const refreshPage = () => {
+    window.location.reload();
   }
 
   const deleteReservation = async (id) => {
@@ -28,42 +30,58 @@ function Reservation() {
     setReserveItem(reserDoc.data());
     const deletedDoc = { ...reserveItem, isCancelled: true };
     const reserve = doc(fs, "Reservation", id);
-    updateDoc(reserve, deletedDoc).then(res=>{
-      setRefresh(!refresh)
+    updateDoc(reserve, deletedDoc).then(res => {
+      refreshPage()
     })
-    console.log(deletedDoc)
+    // console.log(deletedDoc)
   };
   return (
     <div className="App">
-      <Container className="container row d-flex justify-content-center" dir="rtl">
-        {Reservation.map((reservation) => {
-          return (
-            <Card className="bg-light col-3" style={{ backgroundColor: "lightgray", width: '18rem' }}>
-              <div>
-                <Card.Text>
-                  <ListGroup>
-                    <ListGroup.Item className="text-start  bg-success text-light" style={{ backgroundColor: "lightgray", height: '3rem' }} ><p>bookDate:{reservation.bookDate}</p></ListGroup.Item>
-                    <ListGroup.Item className="text-start  bg-primary text-light" style={{ backgroundColor: "lightgray", height: '3rem' }} ><p>bookhour:{reservation.bookhour}</p></ListGroup.Item>
-                    <ListGroup.Item className="text-start  bg-primary text-light" style={{ backgroundColor: "lightgray", height: '4rem' }}><p> {reservation.doctorName}:DoctorName</p></ListGroup.Item>
-                    <ListGroup.Item className="text-start  bg-primary text-light" style={{ backgroundColor: "lightgray", height: '3rem' }}><p>Doctorphone: {reservation.doctorPhone}</p></ListGroup.Item>
-                    <ListGroup.Item className="text-start  bg-primary text-light" style={{ backgroundColor: "lightgray", height: '3rem' }}><p>:?isCancelled {reservation.isCancelled}</p></ListGroup.Item>
-                    <ListGroup.Item className="text-start  bg-primary text-light" style={{ backgroundColor: "lightgray", height: '3rem' }}><p>Price: {reservation.price}</p></ListGroup.Item>
-                    <ListGroup.Item className="text-start  bg-primary text-light" style={{ backgroundColor: "lightgray", height: '3rem' }}><p>userEmail: {reservation.userEmail}</p></ListGroup.Item>
-                    <ListGroup.Item className="text-start  bg-primary text-light" style={{ backgroundColor: "lightgray", height: '3rem' }}><p>userName: {reservation.userName}</p></ListGroup.Item>
-                    <ListGroup.Item className="text-start  bg-primary text-light" style={{ backgroundColor: "lightgray", height: '3rem' }}><p>userPhone: {reservation.userPhone}</p></ListGroup.Item>
-                    <ListGroup.Item className="text-start  bg-primary text-light" style={{ backgroundColor: "lightgray", height: '3rem' }}><p>loctionCity: {reservation.doctorLocation.city}</p></ListGroup.Item>
-                    <ListGroup.Item className="text-start  bg-primary text-light" style={{ backgroundColor: "lightgray", height: '4rem' }}><p>LocationRegion: {reservation.doctorLocation.region}</p></ListGroup.Item>
-                  </ListGroup>
-                </Card.Text>
-                <div className="d-flex flex-row">
-                  <FontAwesomeIcon icon={faTrash} style={{ margin: 3 }} className="icon" onClick={() => { deleteReservation(reservation.id) }}></FontAwesomeIcon>
-                </div>
-              </div>
-            </Card>
-          );
-        })}
+      <Container className="container row d-flex justify-content-center mx-auto my-auto" dir="ltr">
+        <Table striped bordered hover variant="dark">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Date</th>
+              <th>hour</th>
+              <th>doctor Name</th>
+              <th>doctor Phone</th>
+              <th>price</th>
+              <th>user Email</th>
+              <th>username</th>
+              <th>user phone</th>
+              <th>city</th>
+              <th>region</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {Reservation?.map((reservation, index) => {
+              return (
+                <tr>
+                  <td>{index + 1}</td>
+                  <td>{reservation.bookDate}</td>
+                  <td>{reservation.bookhour}</td>
+                  <td>{reservation.doctorName}</td>
+                  <td>{reservation.doctorPhone}</td>
+                  <td>{reservation.price}</td>
+                  <td>{reservation.userEmail}</td>
+                  <td>{reservation.userName}</td>
+                  <td>{reservation.userPhone}</td>
+                  <td>{reservation.doctorLocation.city}</td>
+                  <td>{reservation.doctorLocation.region}</td>
+                  {reservation.isCancelled && <td>Cancelled</td>}
+
+                  <td>
+                    <FontAwesomeIcon icon={faTrash} className='icon' onClick={() => { deleteReservation(reservation.id) }}></FontAwesomeIcon>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
       </Container>
-    </div>
+    </div >
   );
 }
 

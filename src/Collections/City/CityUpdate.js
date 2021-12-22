@@ -1,52 +1,58 @@
-import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
+import { useHistory, useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { fs } from '../../FirebaseConfig';
-import { doc, getDoc, updateDoc, collection, addDoc } from 'firebase/firestore'
+import { doc, updateDoc, collection, addDoc } from 'firebase/firestore'
+import AddRegion from './AddRegion';
+import setCity from '../../store/actions/city';
+import getRegions from '../../store/actions/regions';
 import Form from 'react-bootstrap/Form'
 import { Container, Button } from 'react-bootstrap';
 import './CityUpdate.css'
-import AddRegion from './AddRegion';
-import { useDispatch, useSelector } from 'react-redux';
-import setCity from '../../store/actions/city';
-import getRegions from '../../store/actions/regions';
-import City from './City';
 export default function CityUpdate() {
     const params = useParams()
     const id = params.id;
     const [cityId, setCityId] = useState(id);
     const [city, setCityobj] = useState({});
-    const dispatch = useDispatch()
     const res = useSelector(state => state.city.city);
-    const regionsRes = useSelector(state => state.regions.regions);
-    const [cityName, setCityName] = useState(city?.namear)
-    console.log(res);
+    const regions = useSelector(state => state.regions.regions);
+    const history = useHistory();
+    const dispatch = useDispatch();
+    let once = true;
     useEffect(() => {
         getCity()
-        console.log(id);
     }, [res]);
 
     const getCity = () => {
         if (cityId) {
             setCityobj(res);
-            dispatch(getRegions(res.regions));
+            if (once) {
+                dispatch(getRegions(res.regions));
+                once = false;
+            }
         }
     }
     const handleInputChange = (e) => {
-        setCityName(e.target.value);
+        setCity({
+            ...city,
+            namear: e.target.value
+        })
+    }
+    const refreshPage = () => {
+        window.location.reload();
     }
     const updateCity = async (e) => {
         // e.preventDefault()
-        console.log(regionsRes)
-        await setCityobj({
-            ...City,
-            namear: cityName,
-            regions: regionsRes
-        })
-        console.log(city);
+        //  console.log(regions);
+        let newCity = {
+            namear: city.namear,
+            nameen: city.nameen,
+            regions: regions
+        }
         const cityDoSnapshot = doc(fs, "city", cityId);
-        updateDoc(cityDoSnapshot, city).then(res => {
-            console.log(res);
-        });
+        updateDoc(cityDoSnapshot, newCity).then(res => {
+            history.push('/city')
+        })
     }
     const AddCity = async (e) => {
         await addDoc(collection(fs, 'city'), city);
@@ -59,9 +65,9 @@ export default function CityUpdate() {
             <Form>
                 <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                     <Form.Label className=' m-2 fw-bold fs-5 text-danger'>Name</Form.Label>
-                    <Form.Control type="text" placeholder="name" value={cityName} name='namear' onChange={(e) => { handleInputChange(e) }} />
+                    <Form.Control type="text" placeholder="name" value={city?.namear} name='namear' onChange={(e) => { handleInputChange(e) }} />
                 </Form.Group>
-                <AddRegion id={cityId} />
+                <AddRegion id={cityId} regions={city?.regions} />
                 {cityId && <Button type="button" className='mb-2' onClick={(e) => { updateCity(e) }}>Update</Button>}
                 {!cityId && <Button type="button" className='mb-2' onClick={(e) => { AddCity(e) }}>Add</Button>}
             </Form>

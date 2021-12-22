@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore'
 import { fs } from '../../FirebaseConfig';
 import { Button, Card, Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import './Insurance.css'
 export default function Insurance() {
     const [insurances, setInsurances] = useState([]);
@@ -21,10 +21,14 @@ export default function Insurance() {
     const updateInsurance = (id) => {
         history.push(`/updateInsurance/${id}`)
     }
+    const refreshPage = () => {
+        window.location.reload();
+       }
     const deleteInsurance = async (id) => {
         const insurancDoc = doc(fs, "Insurance", id);
-        await deleteDoc(insurancDoc);
-        alert('Doc Deleted Successfully ');
+        await deleteDoc(insurancDoc).then(res=>{
+            refreshPage()
+        });
     }
     const addNewDoc = () => {
         history.push("/addInsurance");
