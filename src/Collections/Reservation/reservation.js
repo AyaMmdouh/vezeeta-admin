@@ -31,7 +31,7 @@ function Reservation() {
     const deletedDoc = { ...reserveItem, isCancelled: true };
     const reserve = doc(fs, "Reservation", id);
     updateDoc(reserve, deletedDoc).then(res => {
-      refreshPage()
+     // refreshPage()
     })
     // console.log(deletedDoc)
   };
