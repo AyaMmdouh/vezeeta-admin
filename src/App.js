@@ -9,10 +9,11 @@ import './App.css';
 function App() {
   const isAuth = useSelector(state=>state.isAuth.isAuth);
   const isLoged= localStorage.getItem("isAuth")
+  console.log("hh")
   return (
     <>
       <Router>
-        {isLoged && <NavbarComponent />}
+        {isAuth && <NavbarComponent />}
         <Routes />
       </Router>
     </>

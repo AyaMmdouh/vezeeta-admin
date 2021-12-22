@@ -5,8 +5,6 @@ import { Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import Table from 'react-bootstrap/Table'
-
-
 function User() {
   const [users, setUsers] = useState([]);
   const [user,setUser]=useState({});
@@ -40,7 +38,7 @@ function User() {
 
   return (
     <div className="App">
-      <Container className="container row d-flex justify-content-center mx-auto my-auto" dir="ltr">
+      <Container className="container row d-flex justify-content-center mx-auto my-5" dir="ltr">
         <Table striped bordered hover variant="dark">
           <thead>
             <tr>
