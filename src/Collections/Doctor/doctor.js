@@ -26,7 +26,7 @@ export default function Doctor() {
   const deleteDoctor = async (id) => {
     const doctorDoc = doc(fs, "Doctors", id);
     await deleteDoc(doctorDoc).then(res => {
-      refreshPage()
+      //refreshPage()
     })
   }
   const refreshPage = () => {
